@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- SEO -->
+<title>Equation Quest: Mobile Algebra Adventure Game</title>
+<meta name="description" content="Equation Quest: Solve algebra puzzles with interactive graphs. Play linear, quadratic, and inequality worlds. Fun mobile math game to boost problem-solving and algebra skills.">
+<meta name="keywords" content="algebra game, equation puzzles, math adventure game, mobile math game, linear equations, quadratic equations, inequalities game, interactive math, Equation Quest">
+<meta name="author" content="Toolskits">
+
+<style>
+body {margin:0; font-family:Arial,sans-serif; display:flex; flex-direction:column; align-items:center; background:#f0f4f8; color:#333; min-height:100vh;}
+h1 {margin-top:20px; font-size:2rem; text-align:center;}
+#game-board {margin-top:20px; width:95%; max-width:500px; background:#fff; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.15); padding:20px;}
+.equation {font-size:1.5rem; margin-bottom:10px; text-align:center;}
+#world-name {font-weight:bold; font-size:1.3rem; margin-bottom:5px;}
+#feedback {text-align:center; font-size:1.2rem; margin-bottom:10px; height:24px;}
+.answer-buttons {display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:15px;}
+button {flex:1 1 45%; padding:15px; font-size:1.2rem; border-radius:8px; border:none; background:#4CAF50; color:white; cursor:pointer; transition:0.3s;}
+button:hover {background:#45a049;}
+#description {margin-top:20px; width:95%; max-width:500px; background:#e8f0fe; border-radius:10px; padding:15px; font-size:1rem; line-height:1.5;}
+.graph-container {width:100%; height:250px; background:#e0eafc; border-radius:10px; margin-bottom:15px; position:relative; touch-action:none;}
+.graph-line {width:20px; height:20px; background:#ff5722; border-radius:50%; position:absolute; cursor:pointer;}
+@media (max-width:400px){ button {flex:1 1 100%; } }
+</style>
+</head>
+<body>
+
+<h1>Equation Quest</h1>
+
+<div id="game-board">
+  <div id="world-name"></div>
+  <div id="equation" class="equation"></div>
+  <div id="feedback"></div>
+  <div class="graph-container" id="graph-container"></div>
+  <div class="answer-buttons" id="answers"></div>
+</div>
+
+<div id="description">
+Welcome to <strong>Equation Quest</strong>! Solve linear, quadratic, and inequality puzzles on interactive graphs. Drag points to match solutions, unlock treasures, and explore different math worlds. Perfect for mobile gameplay and improving algebra skills!
+</div>
+
+<script>
+// ===== Game Data =====
+const worlds = [
+  { name:"Linear World", levels:[
+    {equation:"x + 3 = 7", answers:[4,5,6,3], correct:4, type:"linear", graphFunc:x=>x+3},
+    {equation:"2x = 10", answers:[5,6,8,2], correct:5, type:"linear", graphFunc:x=>2*x}
+  ]},
+  { name:"Quadratic World", levels:[
+    {equation:"x^2 - 9 = 0", answers:[3,-3,4,5], correct:3, type:"quadratic", graphFunc:x=>x*x - 9},
+    {equation:"x^2 - 4 = 0", answers:[2,-2,3,4], correct:2, type:"quadratic", graphFunc:x=>x*x - 4}
+  ]},
+  { name:"Inequality World", levels:[
+    {equation:"x + 2 > 5", answers:[4,5,6,3], correct:4, type:"inequality", graphFunc:x=>x+2},
+    {equation:"3x - 1 < 8", answers:[3,2,4,5], correct:3, type:"inequality", graphFunc:x=>3*x -1}
+  ]}
+];
+
+let currentWorld = 0;
+let currentLevel = 0;
+
+const worldNameDiv = document.getElementById('world-name');
+const equationDiv = document.getElementById('equation');
+const answersDiv = document.getElementById('answers');
+const feedbackDiv = document.getElementById('feedback');
+const graphContainer = document.getElementById('graph-container');
+
+// ===== Functions =====
+function loadLevel(){
+  const level = worlds[currentWorld].levels[currentLevel];
+  worldNameDiv.textContent = worlds[currentWorld].name;
+  equationDiv.textContent = level.equation;
+  answersDiv.innerHTML = '';
+  feedbackDiv.textContent = '';
+  graphContainer.innerHTML = '';
+
+  // Draw simple graph points for visualization
+  if(level.graphFunc){
+    const graphWidth = graphContainer.clientWidth;
+    const graphHeight = graphContainer.clientHeight;
+    for(let i=0;i<graphWidth;i+=30){
+      const y = graphHeight/2 - level.graphFunc(i/30) * 20; // scale
+      const point = document.createElement('div');
+      point.style.width='6px'; point.style.height='6px';
+      point.style.background='#1976d2';
+      point.style.position='absolute';
+      point.style.left = i+'px';
+      point.style.top = y+'px';
+      point.style.borderRadius='50%';
+      graphContainer.appendChild(point);
+    }
+  }
+
+  // Draggable solution point
+  const solutionPoint = document.createElement('div');
+  solutionPoint.className='graph-line';
+  solutionPoint.style.left='50%';
+  solutionPoint.style.top='50%';
+  graphContainer.appendChild(solutionPoint);
+
+  solutionPoint.addEventListener('pointerdown', startDrag);
+  function startDrag(e){
+    e.target.setPointerCapture(e.pointerId);
+    e.target.addEventListener('pointermove', dragMove);
+    e.target.addEventListener('pointerup', endDrag);
+  }
+  function dragMove(e){
+    const rect = graphContainer.getBoundingClientRect();
+    let x = e.clientX - rect.left; let y = e.clientY - rect.top;
+    if(x<0)x=0; if(x>rect.width)x=rect.width;
+    if(y<0)y=0; if(y>rect.height)y=rect.height;
+    e.target.style.left = x+'px';
+    e.target.style.top = y+'px';
+  }
+  function endDrag(e){
+    e.target.releasePointerCapture(e.pointerId);
+    e.target.removeEventListener('pointermove', dragMove);
+    e.target.removeEventListener('pointerup', endDrag);
+  }
+
+  // Answer buttons
+  level.answers.forEach(answer=>{
+    const btn = document.createElement('button');
+    btn.textContent = answer;
+    btn.addEventListener('click', ()=>checkAnswer(answer));
+    answersDiv.appendChild(btn);
+  });
+}
+
+function checkAnswer(selected){
+  const level = worlds[currentWorld].levels[currentLevel];
+  if(selected===level.correct){
+    feedbackDiv.textContent="✅ Correct!";
+    feedbackDiv.style.color="#4CAF50";
+    currentLevel++;
+    if(currentLevel < worlds[currentWorld].levels.length){
+      setTimeout(loadLevel,1000);
+    } else {
+      currentWorld++;
+      if(currentWorld < worlds.length){
+        currentLevel=0;
+        setTimeout(loadLevel,1000);
+      } else {
+        equationDiv.textContent="🎉 You completed Equation Quest!";
+        answersDiv.innerHTML=''; graphContainer.innerHTML=''; feedbackDiv.textContent='';
+      }
+    }
+  } else {
+    feedbackDiv.textContent="❌ Try Again!";
+    feedbackDiv.style.color="#f44336";
+  }
+}
+
+// ===== Initialize =====
+loadLevel();
+</script>
+
+</body>
+</html>
