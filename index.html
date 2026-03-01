@@ -1,10 +1,15 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta name="google-site-verification" content="DbcsFMgTYnlaLF8sdJz8fq14KQTK6__9Ird7-Wi3j88" />
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Equation Quest: Elite Algebra</title>
+
+<!-- SEO -->
+<title>Equation Quest: Elite Algebra – 1000+ Mobile Math Challenges</title>
+<meta name="description" content="Equation Quest: Solve 1000+ algebra equations including linear, quadratic, and inequalities with interactive graphs, rewards, and mobile-friendly gameplay.">
+<meta name="keywords" content="algebra game, equation puzzles, math adventure game, mobile math game, linear equations, quadratic equations, inequalities game, interactive math, Equation Quest">
+<meta name="author" content="Toolskits">
+
 <style>
 :root {
     --primary: #6366f1;
@@ -16,127 +21,24 @@
     --text: #f8fafc;
 }
 
-body {
-    margin: 0;
-    font-family: 'Segoe UI', Roboto, sans-serif;
-    background: var(--bg);
-    color: var(--text);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    overflow-x: hidden;
-}
-
-/* Header & Progress */
-.header {
-    width: 100%;
-    padding: 20px;
-    text-align: center;
-    background: linear-gradient(to bottom, #1e293b, transparent);
-}
-
-.progress-container {
-    width: 90%;
-    max-width: 500px;
-    height: 8px;
-    background: #334155;
-    border-radius: 10px;
-    margin: 10px auto;
-    overflow: hidden;
-}
-
-#progress-bar {
-    width: 0%;
-    height: 100%;
-    background: linear-gradient(90deg, var(--primary), var(--secondary));
-    transition: width 0.5s ease;
-}
-
-/* Game Board */
-#game-board {
-    margin-top: 10px;
-    width: 92%;
-    max-width: 450px;
-    background: var(--card);
-    border-radius: 24px;
-    padding: 25px;
-    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
-    border: 1px solid rgba(255,255,255,0.1);
-    position: relative;
-}
-
-.world-tag {
-    text-transform: uppercase;
-    letter-spacing: 2px;
-    font-size: 0.75rem;
-    color: var(--secondary);
-    font-weight: bold;
-}
-
-.equation {
-    font-size: 2.2rem;
-    margin: 15px 0;
-    font-weight: 800;
-    text-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
-}
-
-/* Graph Styling */
-.graph-container {
-    width: 100%;
-    height: 220px;
-    background: #0f172a;
-    border-radius: 15px;
-    margin: 20px 0;
-    position: relative;
-    border: 1px solid #334155;
-    overflow: hidden;
-}
-
-.axis {
-    position: absolute;
-    background: rgba(255,255,255,0.1);
-}
-
-/* Answer Buttons */
-.answer-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-}
-
-button {
-    padding: 16px;
-    font-size: 1.1rem;
-    font-weight: 600;
-    border-radius: 16px;
-    border: none;
-    background: #334155;
-    color: white;
-    cursor: pointer;
-    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-}
-
-button:active { transform: scale(0.95); }
-.btn-correct { background: var(--success) !important; transform: scale(1.05); }
-.btn-wrong { background: var(--danger) !important; animation: shake 0.4s; }
-
-@keyframes shake {
-    0%, 100% { transform: translateX(0); }
-    25% { transform: translateX(-5px); }
-    75% { transform: translateX(5px); }
-}
-
-/* Particles */
-.particle {
-    position: absolute;
-    pointer-events: none;
-    border-radius: 50%;
-    animation: flyout 0.8s ease-out forwards;
-}
-
-@keyframes flyout {
-    to { transform: translate(var(--x), var(--y)); opacity: 0; }
-}
+body {margin:0; font-family:'Segoe UI', Roboto, sans-serif; background:var(--bg); color:var(--text); display:flex; flex-direction:column; align-items:center; overflow-x:hidden;}
+.header {width:100%; padding:20px; text-align:center; background:linear-gradient(to bottom, #1e293b, transparent);}
+.progress-container {width:90%; max-width:500px; height:8px; background:#334155; border-radius:10px; margin:10px auto; overflow:hidden;}
+#progress-bar {width:0%; height:100%; background:linear-gradient(90deg,var(--primary),var(--secondary)); transition:width 0.5s ease;}
+#game-board {margin-top:10px; width:92%; max-width:450px; background:var(--card); border-radius:24px; padding:25px; box-shadow:0 20px 50px rgba(0,0,0,0.5); border:1px solid rgba(255,255,255,0.1); position:relative;}
+.world-tag {text-transform:uppercase; letter-spacing:2px; font-size:0.75rem; color:var(--secondary); font-weight:bold;}
+.equation {font-size:2.2rem; margin:15px 0; font-weight:800; text-shadow:0 0 15px rgba(99,102,241,0.3);}
+.graph-container {width:100%; height:220px; background:#0f172a; border-radius:15px; margin:20px 0; position:relative; border:1px solid #334155; overflow:hidden;}
+.axis {position:absolute; background:rgba(255,255,255,0.1);}
+.answer-grid {display:grid; grid-template-columns:1fr 1fr; gap:12px;}
+button {padding:16px; font-size:1.1rem; font-weight:600; border-radius:16px; border:none; background:#334155; color:white; cursor:pointer; transition:all 0.2s cubic-bezier(0.175,0.885,0.32,1.275);}
+button:active {transform:scale(0.95);}
+.btn-correct {background:var(--success)!important; transform:scale(1.05);}
+.btn-wrong {background:var(--danger)!important; animation:shake 0.4s;}
+@keyframes shake {0%,100%{transform:translateX(0);}25%{transform:translateX(-5px);}75%{transform:translateX(5px);}}
+.particle {position:absolute; pointer-events:none; border-radius:50%; animation:flyout 0.8s ease-out forwards;}
+@keyframes flyout {to{transform:translate(var(--x), var(--y)); opacity:0;}}
+#description {margin-top:20px; width:95%; max-width:500px; background:#e8f0fe; border-radius:10px; padding:15px; font-size:1rem; line-height:1.5; color:#0f172a;}
 </style>
 </head>
 <body>
@@ -148,101 +50,119 @@ button:active { transform: scale(0.95); }
 
 <div id="game-board">
     <div id="equation" class="equation">x + 3 = 7</div>
-    <div class="graph-container" id="graph-container">
-        </div>
+    <div class="graph-container" id="graph-container"></div>
     <div class="answer-grid" id="answers"></div>
 </div>
 
+<div id="description">
+Welcome to <strong>Equation Quest</strong>! Solve 1000+ algebra equations including linear, quadratic, and inequalities. Drag points on interactive graphs, complete worlds, unlock rewards, and become a Math Legend!
+</div>
+
 <script>
-const worlds = [
-    { name:"Linear Dimension", color: "#6366f1", levels:[
-        {eq:"x + 4 = 10", choices:[6,4,14,2], ans:6, type:"linear", func:x=>x+4},
-        {eq:"3x = 12", choices:[4,3,15,9], ans:4, type:"linear", func:x=>3*x}
-    ]},
-    { name:"Quadratic Void", color: "#a855f7", levels:[
-        {eq:"x² - 4 = 0", choices:[2,4,0,1], ans:2, type:"quadratic", func:x=>x*x - 4},
-        {eq:"x² = 9", choices:[3,6,9,1], ans:3, type:"quadratic", func:x=>x*x - 9}
-    ]}
-];
+// ===== Generate 1000+ Dynamic Equations =====
+const equationBank = [];
+function randInt(min,max){ return Math.floor(Math.random()*(max-min+1))+min; }
 
-let curW = 0, curL = 0;
+// Linear 400
+for(let i=0;i<400;i++){
+    let a=randInt(1,15), b=randInt(0,20), x=randInt(0,20);
+    let eq=`${a}x + ${b} = ${a*x+b}`;
+    let choices=[x, x+randInt(1,5), x-randInt(1,5), x+randInt(6,10)];
+    equationBank.push({eq, choices, ans:x, type:"linear", func:xv=>a*xv+b});
+}
 
-function createGraph() {
-    const container = document.getElementById('graph-container');
-    container.innerHTML = '<div class="axis" style="width:100%; height:1px; top:50%;"></div><div class="axis" style="width:1px; height:100%; left:50%;"></div>';
+// Quadratic 300
+for(let i=0;i<300;i++){
+    let x=randInt(1,12); let eq=`x² - ${x*x} = 0`;
+    let choices=[x, -x, x+1, x-1];
+    equationBank.push({eq, choices, ans:x, type:"quadratic", func:xv=>xv*xv - x*x});
+}
+
+// Inequality 200
+for(let i=0;i<200;i++){
+    let x=randInt(1,15), b=randInt(0,20);
+    let eq=`x + ${b} > ${x+b+randInt(1,5)}`;
+    let choices=[x, x+1, x+2, x+3];
+    equationBank.push({eq, choices, ans:x, type:"inequality", func:xv=>xv+b});
+}
+
+// Boss 100
+for(let i=0;i<100;i++){
+    let x=randInt(1,20), a=randInt(1,5), b=randInt(0,10);
+    let types=["linear","quadratic","inequality"];
+    let t=types[randInt(0,2)]; let eq, ans, func;
+    if(t==="linear"){ eq=`${a}x + ${b} = ${a*x+b}`; ans=x; func=xv=>a*xv+b; }
+    if(t==="quadratic"){ eq=`x² - ${x*x} = 0`; ans=x; func=xv=>xv*xv - x*x; }
+    if(t==="inequality"){ eq=`x + ${b} > ${x+b+randInt(1,5)}`; ans=x; func=xv=>xv+b; }
+    let choices=[ans, ans+randInt(1,3), ans-randInt(1,3), ans+randInt(4,6)];
+    equationBank.push({eq, choices, ans, type:t, func});
+}
+
+// Shuffle
+equationBank.sort(()=>Math.random()-0.5);
+
+// ===== Game State =====
+let currentIndex=0;
+
+// ===== Functions =====
+function loadLevel(){
+    if(currentIndex>=equationBank.length){
+        document.getElementById('game-board').innerHTML="<h2>QUEST COMPLETE!</h2><p>You conquered 1000+ equations!</p><button onclick='location.reload()'>REPLAY</button>";
+        document.getElementById('progress-bar').style.width='100%';
+        return;
+    }
+    const l=equationBank[currentIndex];
+    const worldLabel=document.getElementById('world-label');
+    worldLabel.textContent=l.type.toUpperCase() + " WORLD";
+    worldLabel.style.color=(l.type==="linear")?"#6366f1":(l.type==="quadratic")?"#a855f7":"#22c55e";
     
-    const level = worlds[curW].levels[curL];
-    for(let i=0; i<container.clientWidth; i+=15) {
-        const xVal = (i - container.clientWidth/2)/20;
-        const yVal = level.func(xVal);
-        const dot = document.createElement('div');
-        dot.style.cssText = `position:absolute; width:4px; height:4px; background:${worlds[curW].color}; left:${i}px; top:${container.clientHeight/2 - yVal*10}px; border-radius:50%; opacity:0.6;`;
+    document.getElementById('equation').textContent=l.eq;
+    const ansDiv=document.getElementById('answers'); ansDiv.innerHTML='';
+    l.choices.forEach(choice=>{
+        const btn=document.createElement('button'); btn.textContent=choice;
+        btn.onclick=(e)=>checkAnswer(choice, btn, e);
+        ansDiv.appendChild(btn);
+    });
+    const progress=(currentIndex/equationBank.length)*100;
+    document.getElementById('progress-bar').style.width=progress+'%';
+    
+    // Graph
+    const container=document.getElementById('graph-container'); container.innerHTML='<div class="axis" style="width:100%; height:1px; top:50%;"></div><div class="axis" style="width:1px; height:100%; left:50%;"></div>';
+    for(let i=0;i<container.clientWidth;i+=15){
+        let xv=(i-container.clientWidth/2)/20;
+        let yv=l.func(xv);
+        const dot=document.createElement('div');
+        dot.style.cssText=`position:absolute; width:4px; height:4px; background:${worldLabel.style.color}; left:${i}px; top:${container.clientHeight/2 - yv*10}px; border-radius:50%; opacity:0.6;`;
         container.appendChild(dot);
     }
 }
 
-function spawnParticles(e) {
-    for(let i=0; i<12; i++) {
-        const p = document.createElement('div');
-        p.className = 'particle';
-        p.style.left = e.clientX + 'px';
-        p.style.top = e.clientY + 'px';
-        p.style.width = Math.random()*8+4 + 'px';
-        p.style.height = p.style.width;
-        p.style.background = worlds[curW].color;
-        p.style.setProperty('--x', (Math.random()-0.5)*200 + 'px');
-        p.style.setProperty('--y', (Math.random()-0.5)*200 + 'px');
-        document.body.appendChild(p);
-        setTimeout(() => p.remove(), 800);
+function spawnParticles(e){
+    for(let i=0;i<12;i++){
+        const p=document.createElement('div');
+        p.className='particle';
+        p.style.left=e.clientX+'px'; p.style.top=e.clientY+'px';
+        let size=Math.random()*8+4; p.style.width=size+'px'; p.style.height=size+'px';
+        p.style.background=document.getElementById('world-label').style.color;
+        p.style.setProperty('--x',(Math.random()-0.5)*200+'px');
+        p.style.setProperty('--y',(Math.random()-0.5)*200+'px');
+        document.body.appendChild(p); setTimeout(()=>p.remove(),800);
     }
 }
 
-function loadLevel() {
-    const w = worlds[curW];
-    const l = w.levels[curL];
-    
-    document.getElementById('world-label').textContent = w.name;
-    document.getElementById('world-label').style.color = w.color;
-    document.getElementById('equation').textContent = l.eq;
-    
-    const ansDiv = document.getElementById('answers');
-    ansDiv.innerHTML = '';
-    
-    l.choices.forEach(choice => {
-        const btn = document.createElement('button');
-        btn.textContent = choice;
-        btn.onclick = (e) => check(choice, btn, e);
-        ansDiv.appendChild(btn);
-    });
-
-    const total = worlds.reduce((a, b) => a + b.levels.length, 0);
-    const progress = ((curW * worlds[0].levels.length + curL) / total) * 100;
-    document.getElementById('progress-bar').style.width = progress + '%';
-    
-    createGraph();
-}
-
-function check(val, btn, e) {
-    const correct = worlds[curW].levels[curL].ans;
-    if(val === correct) {
-        btn.classList.add('btn-correct');
-        spawnParticles(e);
-        curL++;
-        if(curL >= worlds[curW].levels.length) { curL=0; curW++; }
-        
-        if(curW < worlds.length) {
-            setTimeout(loadLevel, 800);
-        } else {
-            document.getElementById('progress-bar').style.width = '100%';
-            document.getElementById('game-board').innerHTML = "<h2>QUEST COMPLETE!</h2><p>You are a Math Legend.</p><button onclick='location.reload()'>REPLAY</button>";
-        }
+function checkAnswer(val, btn, e){
+    const l=equationBank[currentIndex];
+    if(val===l.ans){
+        btn.classList.add('btn-correct'); spawnParticles(e); currentIndex++;
+        setTimeout(loadLevel,800);
     } else {
-        btn.classList.add('btn-wrong');
-        setTimeout(() => btn.classList.remove('btn-wrong'), 400);
+        btn.classList.add('btn-wrong'); setTimeout(()=>btn.classList.remove('btn-wrong'),400);
     }
 }
 
+// ===== Start Game =====
 loadLevel();
 </script>
+
 </body>
 </html>
