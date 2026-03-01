@@ -3,160 +3,245 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<!-- SEO -->
-<title>Equation Quest: Mobile Algebra Adventure Game</title>
-<meta name="description" content="Equation Quest: Solve algebra puzzles with interactive graphs. Play linear, quadratic, and inequality worlds. Fun mobile math game to boost problem-solving and algebra skills.">
-<meta name="keywords" content="algebra game, equation puzzles, math adventure game, mobile math game, linear equations, quadratic equations, inequalities game, interactive math, Equation Quest">
-<meta name="author" content="Toolskits">
-
+<title>Equation Quest: Elite Algebra</title>
 <style>
-body {margin:0; font-family:Arial,sans-serif; display:flex; flex-direction:column; align-items:center; background:#f0f4f8; color:#333; min-height:100vh;}
-h1 {margin-top:20px; font-size:2rem; text-align:center;}
-#game-board {margin-top:20px; width:95%; max-width:500px; background:#fff; border-radius:12px; box-shadow:0 4px 10px rgba(0,0,0,0.15); padding:20px;}
-.equation {font-size:1.5rem; margin-bottom:10px; text-align:center;}
-#world-name {font-weight:bold; font-size:1.3rem; margin-bottom:5px;}
-#feedback {text-align:center; font-size:1.2rem; margin-bottom:10px; height:24px;}
-.answer-buttons {display:flex; flex-wrap:wrap; gap:10px; justify-content:center; margin-bottom:15px;}
-button {flex:1 1 45%; padding:15px; font-size:1.2rem; border-radius:8px; border:none; background:#4CAF50; color:white; cursor:pointer; transition:0.3s;}
-button:hover {background:#45a049;}
-#description {margin-top:20px; width:95%; max-width:500px; background:#e8f0fe; border-radius:10px; padding:15px; font-size:1rem; line-height:1.5;}
-.graph-container {width:100%; height:250px; background:#e0eafc; border-radius:10px; margin-bottom:15px; position:relative; touch-action:none;}
-.graph-line {width:20px; height:20px; background:#ff5722; border-radius:50%; position:absolute; cursor:pointer;}
-@media (max-width:400px){ button {flex:1 1 100%; } }
+:root {
+    --primary: #6366f1;
+    --secondary: #a855f7;
+    --success: #22c55e;
+    --danger: #ef4444;
+    --bg: #0f172a;
+    --card: #1e293b;
+    --text: #f8fafc;
+}
+
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow-x: hidden;
+}
+
+/* Header & Progress */
+.header {
+    width: 100%;
+    padding: 20px;
+    text-align: center;
+    background: linear-gradient(to bottom, #1e293b, transparent);
+}
+
+.progress-container {
+    width: 90%;
+    max-width: 500px;
+    height: 8px;
+    background: #334155;
+    border-radius: 10px;
+    margin: 10px auto;
+    overflow: hidden;
+}
+
+#progress-bar {
+    width: 0%;
+    height: 100%;
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    transition: width 0.5s ease;
+}
+
+/* Game Board */
+#game-board {
+    margin-top: 10px;
+    width: 92%;
+    max-width: 450px;
+    background: var(--card);
+    border-radius: 24px;
+    padding: 25px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    border: 1px solid rgba(255,255,255,0.1);
+    position: relative;
+}
+
+.world-tag {
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    font-size: 0.75rem;
+    color: var(--secondary);
+    font-weight: bold;
+}
+
+.equation {
+    font-size: 2.2rem;
+    margin: 15px 0;
+    font-weight: 800;
+    text-shadow: 0 0 15px rgba(99, 102, 241, 0.3);
+}
+
+/* Graph Styling */
+.graph-container {
+    width: 100%;
+    height: 220px;
+    background: #0f172a;
+    border-radius: 15px;
+    margin: 20px 0;
+    position: relative;
+    border: 1px solid #334155;
+    overflow: hidden;
+}
+
+.axis {
+    position: absolute;
+    background: rgba(255,255,255,0.1);
+}
+
+/* Answer Buttons */
+.answer-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+button {
+    padding: 16px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 16px;
+    border: none;
+    background: #334155;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+button:active { transform: scale(0.95); }
+.btn-correct { background: var(--success) !important; transform: scale(1.05); }
+.btn-wrong { background: var(--danger) !important; animation: shake 0.4s; }
+
+@keyframes shake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-5px); }
+    75% { transform: translateX(5px); }
+}
+
+/* Particles */
+.particle {
+    position: absolute;
+    pointer-events: none;
+    border-radius: 50%;
+    animation: flyout 0.8s ease-out forwards;
+}
+
+@keyframes flyout {
+    to { transform: translate(var(--x), var(--y)); opacity: 0; }
+}
 </style>
 </head>
 <body>
 
-<h1>Equation Quest</h1>
-
-<div id="game-board">
-  <div id="world-name"></div>
-  <div id="equation" class="equation"></div>
-  <div id="feedback"></div>
-  <div class="graph-container" id="graph-container"></div>
-  <div class="answer-buttons" id="answers"></div>
+<div class="header">
+    <div class="world-tag" id="world-label">LINEAR DIMENSION</div>
+    <div class="progress-container"><div id="progress-bar"></div></div>
 </div>
 
-<div id="description">
-Welcome to <strong>Equation Quest</strong>! Solve linear, quadratic, and inequality puzzles on interactive graphs. Drag points to match solutions, unlock treasures, and explore different math worlds. Perfect for mobile gameplay and improving algebra skills!
+<div id="game-board">
+    <div id="equation" class="equation">x + 3 = 7</div>
+    <div class="graph-container" id="graph-container">
+        </div>
+    <div class="answer-grid" id="answers"></div>
 </div>
 
 <script>
-// ===== Game Data =====
 const worlds = [
-  { name:"Linear World", levels:[
-    {equation:"x + 3 = 7", answers:[4,5,6,3], correct:4, type:"linear", graphFunc:x=>x+3},
-    {equation:"2x = 10", answers:[5,6,8,2], correct:5, type:"linear", graphFunc:x=>2*x}
-  ]},
-  { name:"Quadratic World", levels:[
-    {equation:"x^2 - 9 = 0", answers:[3,-3,4,5], correct:3, type:"quadratic", graphFunc:x=>x*x - 9},
-    {equation:"x^2 - 4 = 0", answers:[2,-2,3,4], correct:2, type:"quadratic", graphFunc:x=>x*x - 4}
-  ]},
-  { name:"Inequality World", levels:[
-    {equation:"x + 2 > 5", answers:[4,5,6,3], correct:4, type:"inequality", graphFunc:x=>x+2},
-    {equation:"3x - 1 < 8", answers:[3,2,4,5], correct:3, type:"inequality", graphFunc:x=>3*x -1}
-  ]}
+    { name:"Linear Dimension", color: "#6366f1", levels:[
+        {eq:"x + 4 = 10", choices:[6,4,14,2], ans:6, type:"linear", func:x=>x+4},
+        {eq:"3x = 12", choices:[4,3,15,9], ans:4, type:"linear", func:x=>3*x}
+    ]},
+    { name:"Quadratic Void", color: "#a855f7", levels:[
+        {eq:"x² - 4 = 0", choices:[2,4,0,1], ans:2, type:"quadratic", func:x=>x*x - 4},
+        {eq:"x² = 9", choices:[3,6,9,1], ans:3, type:"quadratic", func:x=>x*x - 9}
+    ]}
 ];
 
-let currentWorld = 0;
-let currentLevel = 0;
+let curW = 0, curL = 0;
 
-const worldNameDiv = document.getElementById('world-name');
-const equationDiv = document.getElementById('equation');
-const answersDiv = document.getElementById('answers');
-const feedbackDiv = document.getElementById('feedback');
-const graphContainer = document.getElementById('graph-container');
-
-// ===== Functions =====
-function loadLevel(){
-  const level = worlds[currentWorld].levels[currentLevel];
-  worldNameDiv.textContent = worlds[currentWorld].name;
-  equationDiv.textContent = level.equation;
-  answersDiv.innerHTML = '';
-  feedbackDiv.textContent = '';
-  graphContainer.innerHTML = '';
-
-  // Draw simple graph points for visualization
-  if(level.graphFunc){
-    const graphWidth = graphContainer.clientWidth;
-    const graphHeight = graphContainer.clientHeight;
-    for(let i=0;i<graphWidth;i+=30){
-      const y = graphHeight/2 - level.graphFunc(i/30) * 20; // scale
-      const point = document.createElement('div');
-      point.style.width='6px'; point.style.height='6px';
-      point.style.background='#1976d2';
-      point.style.position='absolute';
-      point.style.left = i+'px';
-      point.style.top = y+'px';
-      point.style.borderRadius='50%';
-      graphContainer.appendChild(point);
+function createGraph() {
+    const container = document.getElementById('graph-container');
+    container.innerHTML = '<div class="axis" style="width:100%; height:1px; top:50%;"></div><div class="axis" style="width:1px; height:100%; left:50%;"></div>';
+    
+    const level = worlds[curW].levels[curL];
+    for(let i=0; i<container.clientWidth; i+=15) {
+        const xVal = (i - container.clientWidth/2)/20;
+        const yVal = level.func(xVal);
+        const dot = document.createElement('div');
+        dot.style.cssText = `position:absolute; width:4px; height:4px; background:${worlds[curW].color}; left:${i}px; top:${container.clientHeight/2 - yVal*10}px; border-radius:50%; opacity:0.6;`;
+        container.appendChild(dot);
     }
-  }
-
-  // Draggable solution point
-  const solutionPoint = document.createElement('div');
-  solutionPoint.className='graph-line';
-  solutionPoint.style.left='50%';
-  solutionPoint.style.top='50%';
-  graphContainer.appendChild(solutionPoint);
-
-  solutionPoint.addEventListener('pointerdown', startDrag);
-  function startDrag(e){
-    e.target.setPointerCapture(e.pointerId);
-    e.target.addEventListener('pointermove', dragMove);
-    e.target.addEventListener('pointerup', endDrag);
-  }
-  function dragMove(e){
-    const rect = graphContainer.getBoundingClientRect();
-    let x = e.clientX - rect.left; let y = e.clientY - rect.top;
-    if(x<0)x=0; if(x>rect.width)x=rect.width;
-    if(y<0)y=0; if(y>rect.height)y=rect.height;
-    e.target.style.left = x+'px';
-    e.target.style.top = y+'px';
-  }
-  function endDrag(e){
-    e.target.releasePointerCapture(e.pointerId);
-    e.target.removeEventListener('pointermove', dragMove);
-    e.target.removeEventListener('pointerup', endDrag);
-  }
-
-  // Answer buttons
-  level.answers.forEach(answer=>{
-    const btn = document.createElement('button');
-    btn.textContent = answer;
-    btn.addEventListener('click', ()=>checkAnswer(answer));
-    answersDiv.appendChild(btn);
-  });
 }
 
-function checkAnswer(selected){
-  const level = worlds[currentWorld].levels[currentLevel];
-  if(selected===level.correct){
-    feedbackDiv.textContent="✅ Correct!";
-    feedbackDiv.style.color="#4CAF50";
-    currentLevel++;
-    if(currentLevel < worlds[currentWorld].levels.length){
-      setTimeout(loadLevel,1000);
+function spawnParticles(e) {
+    for(let i=0; i<12; i++) {
+        const p = document.createElement('div');
+        p.className = 'particle';
+        p.style.left = e.clientX + 'px';
+        p.style.top = e.clientY + 'px';
+        p.style.width = Math.random()*8+4 + 'px';
+        p.style.height = p.style.width;
+        p.style.background = worlds[curW].color;
+        p.style.setProperty('--x', (Math.random()-0.5)*200 + 'px');
+        p.style.setProperty('--y', (Math.random()-0.5)*200 + 'px');
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 800);
+    }
+}
+
+function loadLevel() {
+    const w = worlds[curW];
+    const l = w.levels[curL];
+    
+    document.getElementById('world-label').textContent = w.name;
+    document.getElementById('world-label').style.color = w.color;
+    document.getElementById('equation').textContent = l.eq;
+    
+    const ansDiv = document.getElementById('answers');
+    ansDiv.innerHTML = '';
+    
+    l.choices.forEach(choice => {
+        const btn = document.createElement('button');
+        btn.textContent = choice;
+        btn.onclick = (e) => check(choice, btn, e);
+        ansDiv.appendChild(btn);
+    });
+
+    const total = worlds.reduce((a, b) => a + b.levels.length, 0);
+    const progress = ((curW * worlds[0].levels.length + curL) / total) * 100;
+    document.getElementById('progress-bar').style.width = progress + '%';
+    
+    createGraph();
+}
+
+function check(val, btn, e) {
+    const correct = worlds[curW].levels[curL].ans;
+    if(val === correct) {
+        btn.classList.add('btn-correct');
+        spawnParticles(e);
+        curL++;
+        if(curL >= worlds[curW].levels.length) { curL=0; curW++; }
+        
+        if(curW < worlds.length) {
+            setTimeout(loadLevel, 800);
+        } else {
+            document.getElementById('progress-bar').style.width = '100%';
+            document.getElementById('game-board').innerHTML = "<h2>QUEST COMPLETE!</h2><p>You are a Math Legend.</p><button onclick='location.reload()'>REPLAY</button>";
+        }
     } else {
-      currentWorld++;
-      if(currentWorld < worlds.length){
-        currentLevel=0;
-        setTimeout(loadLevel,1000);
-      } else {
-        equationDiv.textContent="🎉 You completed Equation Quest!";
-        answersDiv.innerHTML=''; graphContainer.innerHTML=''; feedbackDiv.textContent='';
-      }
+        btn.classList.add('btn-wrong');
+        setTimeout(() => btn.classList.remove('btn-wrong'), 400);
     }
-  } else {
-    feedbackDiv.textContent="❌ Try Again!";
-    feedbackDiv.style.color="#f44336";
-  }
 }
 
-// ===== Initialize =====
 loadLevel();
 </script>
-
 </body>
 </html>
